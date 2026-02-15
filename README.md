@@ -120,6 +120,8 @@ O diagrama de classes apresenta uma visão estrutural do sistema, evidenciando:
 * **Ator Secundário:** Aluno (Consulta), Diretor (Decide casos graves).
 * **Sistema:** Valida regras, armazena dados e notifica.
 
+<img width="1024" height="559" alt="Image" src="https://github.com/user-attachments/assets/e20bb7c6-7f2c-4230-acad-cd7eae686ade" />
+
 ### 6.2 Fluxos de Caso de Uso
 
 #### Cenário A: Professor Registra Ocorrência
