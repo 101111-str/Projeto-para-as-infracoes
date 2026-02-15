@@ -26,7 +26,7 @@ O diagrama de classes apresenta uma visão estrutural do sistema, evidenciando:
 * **Comunicação:** A classe `Notificacao`, responsável pela comunicação assíncrona com os envolvidos.
 * **Comportamento:** Métodos de ação explícitos, como `registrarOcorrencia()`, `aplicarMedida()` e `baixar()` (geração de documentos).
 
-
+<img width="2528" height="1696" alt="Image" src="https://github.com/user-attachments/assets/0f254a90-5e22-4b85-8200-9149b9974a75" />
 
 ---
 
