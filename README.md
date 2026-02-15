@@ -100,7 +100,7 @@ O diagrama de classes apresenta uma visão estrutural do sistema, evidenciando:
 
 ---
 
-## 5. Recursos do Produto (Funcionalidades)
+## 5. Funcionalidades
 
 * **Autenticação Centralizada:** Login único para todos os perfis via classe `Usuario`.
 * **Registro de Ocorrências:** Professores podem registrar incidentes com descrição detalhada.
@@ -119,7 +119,7 @@ O diagrama de classes apresenta uma visão estrutural do sistema, evidenciando:
 * **Ator Primário:** Professor (Registra), Coordenador (Analisa).
 * **Ator Secundário:** Aluno (Consulta), Diretor (Decide casos graves).
 * **Sistema:** Valida regras, armazena dados e notifica.
-
+  
 <img width="1024" height="559" alt="Image" src="https://github.com/user-attachments/assets/e20bb7c6-7f2c-4230-acad-cd7eae686ade" />
 
 ### 6.2 Fluxos de Caso de Uso
@@ -157,7 +157,7 @@ O diagrama e a arquitetura foram pensados respeitando os princípios:
 
 ---
 
-## 8. Componentes (Arquitetura)
+## 8. Arquitetura
 
 * Camada de Apresentação (Frontend)
 * Camada de Aplicação (Backend API)
@@ -169,6 +169,60 @@ O diagrama e a arquitetura foram pensados respeitando os princípios:
 
 ## 9. Restrições
 
-* **9.1 Restrições de desenvolvimento:** (A definir)
-* **9.2 Restrições de segurança:** (A definir)
-* **9.3 Restrições de metodologia:** (A definir)
+### 9.1 Restrições de Desenvolvimento
+O desenvolvimento do SGO deverá obedecer às seguintes restrições técnicas e estruturais:
+
+* **Aplicação Responsiva:** O sistema deve ser uma aplicação web responsiva, garantindo acesso adequado em computadores e dispositivos móveis, compatível com os principais navegadores modernos.
+* **API RESTful:** O backend deve expor uma API utilizando padrões de mercado (verbos HTTP, códigos de status e JSON), facilitando integrações futuras com outros sistemas institucionais.
+* **Identificadores UUID:** Todas as entidades persistidas devem utilizar UUID como chave primária para evitar enumeração indevida e facilitar migrações.
+* **Integridade de Dados:** O banco de dados deve ser relacional, com regras de integridade referencial (FK, unicidade) implementadas tanto no banco quanto na aplicação.
+* **Armazenamento de Arquivos:** Os arquivos binários (`Anexo`) **não** devem ser salvos no banco de dados. Devem residir em serviço de armazenamento externo (filesystem ou nuvem), mantendo apenas metadados no banco.
+* **Arquitetura Modular:** O sistema deve respeitar a separação em camadas (apresentação, aplicação e persistência) para evitar acoplamento excessivo.
+
+### 9.2 Restrições de Segurança
+Devido à sensibilidade dos dados de alunos e servidores, são obrigatórias as seguintes medidas:
+
+* **Autenticação Segura:** Uso de tokens (ex: JWT) em vez de sessões inseguras ou credenciais em texto puro.
+* **Controle de Acesso (RBAC):** Cada usuário deve executar apenas ações compatíveis com seu papel:
+    * *Professores:* Apenas registram ocorrências.
+    * *Coordenação/Diretor:* Apenas estes podem aplicar medidas.
+    * *Diretor:* Apenas este decide casos graves.
+* **Proteção de Dados:** Criptografia em repouso e em trânsito para dados sensíveis (CPF, histórico disciplinar).
+* **Controle de Documentos:** O acesso ao método `baixar()` (relatórios/PDFs) deve ser restrito e auditável.
+* **Auditabilidade:** O sistema deve manter logs de auditoria (quem, quando, o quê) para garantir rastreabilidade.
+
+### 9.3 Restrições de Metodologia
+* **Metodologia Ágil:** Desenvolvimento via Scrum ou Kanban para permitir evolução incremental.
+* **Code Review e SOLID:** Alterações no modelo ou regras de negócio exigem revisão de código para garantir a coerência arquitetural e os princípios SOLID.
+* **Rastreabilidade:** Cada funcionalidade deve estar vinculada a um caso de uso específico.
+* **Documentação Viva:** Diagramas e README devem ser tratados como parte do produto e mantidos atualizados.
+* **Inversão de Dependência (DIP):** Não é permitido acoplamento direto a bibliotecas de infraestrutura (ex: PDF, E-mail); estas devem ser abstraídas por interfaces.
+
+### 9.4 Restrições Legais e Normativas
+* **Conformidade com a LGPD:** O sistema deve respeitar a Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018), garantindo tratamento legítimo, explícito e informado.
+* **Direitos do Titular:** Deve ser possível identificar o responsável pelo tratamento e permitir a exclusão ou anonimização de dados quando não mais necessários.
+* **Ciclo de Vida dos Dados:** Informações disciplinares devem ter prazo de retenção definido, sendo vedada a manutenção indefinida de registros sensíveis.
+* **Princípio do Mínimo Privilégio:** O acesso aos dados deve ser restrito apenas a usuários autorizados e estritamente necessário para suas funções.
+
+### 9.5 Restrições de Infraestrutura
+* **Ambiente e Escalabilidade:** O servidor deve suportar aplicações web modernas e permitir escalabilidade (vertical ou horizontal) conforme a demanda.
+* **Hospedagem Centralizada:** O sistema não pode depender de recursos locais (máquinas individuais); deve estar em servidor institucional ou nuvem confiável.
+* **Disponibilidade e Recuperação:** Mecanismos de backup automático e recuperação de desastres são obrigatórios para garantir a integridade dos dados.
+* **Desempenho:** O sistema deve suportar acessos simultâneos e manter desempenho aceitável em picos de demanda (ex: fechamento de semestre).
+
+### 9.6 Restrições de Usabilidade e Acessibilidade
+* **Facilidade de Uso:** Interface intuitiva para usuários com diferentes níveis de conhecimento tecnológico.
+* **Feedback ao Usuário:** Mensagens de erro devem ser claras, orientativas e evitar jargão técnico excessivo.
+* **Acessibilidade:** Atendimento às diretrizes de acessibilidade digital (contraste, navegação por teclado, textos alternativos) para inclusão de pessoas com limitações.
+* **Consistência:** A navegação e o comportamento dos elementos devem ser padronizados em todas as telas.
+
+### 9.7 Restrições de Manutenção e Evolução
+* **Controle de Versão:** Código-fonte obrigatoriamente versionado em Git, com histórico de alterações e identificação dos responsáveis.
+* **Documentação de Funcionalidades:** Novas funcionalidades exigem documentação técnica mínima (regras de negócio e impactos).
+* **Manutenibilidade:** A arquitetura deve permitir evolução incremental sem necessidade de reescrita completa.
+* **Extensibilidade:** Deve ser possível incluir novos tipos de usuários ou regras sem alterações profundas na estrutura base.
+
+### 9.8 Restrições Acadêmicas e Institucionais
+* **Propósito Acadêmico:** Uso exclusivo para fins acadêmicos/institucionais, vedado o uso comercial sem autorização.
+* **Fidelidade Normativa:** As regras de negócio devem refletir fielmente os regulamentos disciplinares da instituição, sem interpretações subjetivas pelo sistema.
+* **Legado e Transparência:** Documentação clara e organizada para permitir avaliação docente e futura manutenção por outras equipes.
